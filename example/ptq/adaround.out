@@ -1,0 +1,79 @@
+[MQBENCH] WARNING: onnxsim not found, if you want to use deploy_tengine, please install it.
+load model from:  /workspace/MQBench/example/ptq/models/cifar10_net.pth
+[MQBENCH] INFO: Quantize model Scheme: BackendType.Academic Mode: Eval
+[MQBENCH] INFO: Weight Qconfig:
+    FakeQuantize: AdaRoundFakeQuantize Params: {}
+    Oberver:      MSEObserver Params: Symmetric: True / Bitwidth: 8 / Per channel: True / Pot scale: False / Extra kwargs: {'p': 2.4}
+[MQBENCH] INFO: Activation Qconfig:
+    FakeQuantize: FixedFakeQuantize Params: {}
+    Oberver:      EMAMSEObserver Params: Symmetric: True / Bitwidth: 8 / Per channel: False / Pot scale: False / Extra kwargs: {'p': 2.4}
+[MQBENCH] INFO: Replace module to qat module.
+[MQBENCH] INFO: Set layer conv1 to 8 bit.
+[MQBENCH] INFO: Set layer fc3 to 8 bit.
+[MQBENCH] INFO: Set x post act quantize to 8 bit.
+[MQBENCH] INFO: Insert act quant x_post_act_fake_quantizer
+[MQBENCH] INFO: Insert act quant pool_post_act_fake_quantizer
+[MQBENCH] INFO: Insert act quant flatten_post_act_fake_quantizer
+[MQBENCH] INFO: Insert act quant relu_2_post_act_fake_quantizer
+[MQBENCH] INFO: Set relu_3 post act quantize to 8 bit.
+[MQBENCH] INFO: Insert act quant relu_3_post_act_fake_quantizer
+Files already downloaded and verified
+Files already downloaded and verified
+[MQBENCH] INFO: Enable observer and Disable quantize for act_fake_quant
+[MQBENCH] INFO: Enable observer and Disable quantize for weight_fake_quant
+[MQBENCH] INFO: Disable observer and Disable quantize.
+[MQBENCH] INFO: Disable observer and Enable quantize.
+[MQBENCH] INFO: prepare layer reconstruction for conv1
+[MQBENCH] INFO: the node list is below!
+[MQBENCH] INFO: [x_post_act_fake_quantizer, conv1, relu, pool, pool_post_act_fake_quantizer]
+[MQBENCH] INFO: 
+
+
+def forward(self, x_post_act_fake_quantizer):
+    conv1 = self.conv1(x_post_act_fake_quantizer);  x_post_act_fake_quantizer = None
+    relu = torch.nn.functional.relu(conv1, inplace = False);  conv1 = None
+    pool = self.pool(relu);  relu = None
+    pool_post_act_fake_quantizer = self.pool_post_act_fake_quantizer(pool);  pool = None
+    return pool_post_act_fake_quantizer
+    
+Init alpha to be FP32
+[MQBENCH] INFO: learn the scale for pool_post_act_fake_quantizer
+[MQBENCH] INFO: The world size is 1.
+[MQBENCH] INFO: start tuning by adaround
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=500
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=1000
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=1500
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=2000
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=2500
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=3000
+[MQBENCH] INFO: Total loss:	0.002 (rec:0.002, round:0.000)	b=20.00	count=3500
+[MQBENCH] INFO: Total loss:	3.961 (rec:0.002, round:3.960)	b=20.00	count=4000
+[MQBENCH] INFO: Total loss:	1.514 (rec:0.002, round:1.513)	b=19.44	count=4500
+[MQBENCH] INFO: Total loss:	1.319 (rec:0.002, round:1.317)	b=18.88	count=5000
+[MQBENCH] INFO: Total loss:	1.129 (rec:0.002, round:1.128)	b=18.31	count=5500
+[MQBENCH] INFO: Total loss:	0.920 (rec:0.002, round:0.919)	b=17.75	count=6000
+[MQBENCH] INFO: Total loss:	0.779 (rec:0.002, round:0.777)	b=17.19	count=6500
+[MQBENCH] INFO: Total loss:	0.604 (rec:0.002, round:0.603)	b=16.62	count=7000
+[MQBENCH] INFO: Total loss:	0.552 (rec:0.002, round:0.550)	b=16.06	count=7500
+[MQBENCH] INFO: Total loss:	0.491 (rec:0.002, round:0.490)	b=15.50	count=8000
+[MQBENCH] INFO: Total loss:	0.419 (rec:0.002, round:0.418)	b=14.94	count=8500
+[MQBENCH] INFO: Total loss:	0.320 (rec:0.002, round:0.319)	b=14.38	count=9000
+[MQBENCH] INFO: Total loss:	0.251 (rec:0.002, round:0.250)	b=13.81	count=9500
+[MQBENCH] INFO: Total loss:	0.187 (rec:0.002, round:0.186)	b=13.25	count=10000
+[MQBENCH] INFO: Total loss:	0.131 (rec:0.002, round:0.130)	b=12.69	count=10500
+[MQBENCH] INFO: Total loss:	0.108 (rec:0.002, round:0.106)	b=12.12	count=11000
+[MQBENCH] INFO: Total loss:	0.080 (rec:0.002, round:0.078)	b=11.56	count=11500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=11.00	count=12000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=10.44	count=12500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=9.88	count=13000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=9.31	count=13500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=8.75	count=14000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=8.19	count=14500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=7.62	count=15000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=7.06	count=15500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=6.50	count=16000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=5.94	count=16500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=5.38	count=17000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=4.81	count=17500
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=4.25	count=18000
+[MQBENCH] INFO: Total loss:	0.052 (rec:0.002, round:0.050)	b=3.69	count=18500

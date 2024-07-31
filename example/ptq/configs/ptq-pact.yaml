@@ -3,7 +3,7 @@ extra_config:
   extra_qconfig_dict:
     w_observer: MSEObserver                     # custom weight observer
     a_observer: EMAMSEObserver                  # custom activation observer
-    w_fakequantize: PACTFakeQuantize            # custom weight fake quantize function
+    w_fakequantize: AdaRoundFakeQuantize        # custom weight fake quantize function
     a_fakequantize: PACTFakeQuantize            # custom activation fake quantize function
     w_qscheme:
       bit: 8                                    # custom bitwidth for weight,
@@ -35,16 +35,12 @@ quantize:
       prob: 0.5                               # dropping probability of QDROP, 1.0 for Adaraound and BRECQ
 
 model:
-  path: /workspace/MQBench/example/advanced_ptq/models/cifar10_net.pth
+  path: /workspace/MQBench/example/ptq/models/cifar10_net.pth
   type: ConvNet                              # model name
 data:
   path: /workspace/shared/data
   batch_size: 64
   num_workers: 4
   pin_memory: True
-  # input_size: 32
-  # test_resize: 256
-# process:
-#   seed: 42
 output:
   filename: academic_brecq_8bit

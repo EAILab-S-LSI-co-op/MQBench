@@ -35,16 +35,12 @@ quantize:
       prob: 1.0                               # dropping probability of QDROP, 1.0 for Adaraound and BRECQ
 
 model:
-  path: /workspace/MQBench/example/advanced_ptq/models/cifar10_net.pth
+  path: /workspace/MQBench/example/ptq/models/cifar10_net.pth
   type: ConvNet                              # model name
 data:
   path: /workspace/shared/data
   batch_size: 256
   num_workers: 4
   pin_memory: True
-  # input_size: 224
-  # test_resize: 256
-# process:
-  # seed: 42
 output:
   filename: academic_adaround_8bit
