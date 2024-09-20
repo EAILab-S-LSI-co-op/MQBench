@@ -22,7 +22,7 @@ extra_config:
 quantize:
   backend: 'Academic'
   quantize_type: advanced_ptq                 # support naive_ptq or advanced_ptq
-  cali_batchsize: 1
+  cali_batchsize: 16
   reconstruction:
       pattern: block                          # 'layer' for Adaround or 'block' for BRECQ and QDROP
       scale_lr: 4.0e-5                        # learning rate for learning step size of activation
